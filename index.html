@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SILA · Sistema de Lecciones Aprendidas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">SILA</div>
+    <div class="brand-text">
+      <strong>SILA</strong>
+      <span>Sistema de Lecciones Aprendidas</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-item active" data-view="dashboard">
+      <span class="nav-dot"></span> Dashboard
+    </button>
+    <button class="nav-item" data-view="registrar">
+      <span class="nav-dot"></span> Registrar lección
+    </button>
+    <button class="nav-item" data-view="consultar">
+      <span class="nav-dot"></span> Consultar lecciones
+    </button>
+    <button class="nav-item" data-view="proyectos">
+      <span class="nav-dot"></span> Proyectos
+    </button>
+    <button class="nav-item" data-view="reportes">
+      <span class="nav-dot"></span> Reportes
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <strong>Proyectos y Tecnología S.A.S.</strong>
+    <span>Gestión del conocimiento de proyectos</span>
+  </div>
+</aside>
+
+<button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">☰</button>
+
+<!-- ===================== MAIN ===================== -->
+<main class="main">
+
+  <!-- ---------- DASHBOARD ---------- -->
+  <section class="view active" id="view-dashboard">
+    <header class="view-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Panorama general del conocimiento registrado por el equipo.</p>
+      </div>
+    </header>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">Lecciones registradas</span>
+        <span class="kpi-value" id="kpiTotalLecciones">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Problemas recurrentes</span>
+        <span class="kpi-value" id="kpiRecurrentes">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Lecciones aplicadas</span>
+        <span class="kpi-value" id="kpiAplicadas">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Proyectos registrados</span>
+        <span class="kpi-value" id="kpiProyectos">0</span>
+      </div>
+    </div>
+
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Problemas por categoría</h2>
+        <div class="bar-chart" id="chartCategorias"></div>
+      </div>
+      <div class="panel">
+        <h2>Lecciones por proyecto</h2>
+        <div class="bar-chart" id="chartProyectos"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Problemas recurrentes</h2>
+      <p class="panel-sub">Categorías o palabras clave que aparecen en varias lecciones distintas.</p>
+      <div id="recurrentesList" class="recurrentes-list"></div>
+    </div>
+  </section>
+
+  <!-- ---------- REGISTRAR LECCIÓN ---------- -->
+  <section class="view" id="view-registrar">
+    <header class="view-header">
+      <div>
+        <h1>Registrar lección</h1>
+        <p>Documenta lo ocurrido para que no se repita, o para replicar lo que funcionó bien.</p>
+      </div>
+    </header>
+
+    <form class="form-card" id="formLeccion">
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="f-proyecto">Proyecto *</label>
+          <select id="f-proyecto" required>
+            <option value="">Selecciona un proyecto</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f-categoria">Categoría *</label>
+          <select id="f-categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option>Programación</option>
+            <option>Comunicación</option>
+            <option>Tiempos de entrega</option>
+            <option>Requerimientos</option>
+            <option>Coordinación</option>
+            <option>Otra</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Tipo de experiencia *</label>
+          <div class="radio-row">
+            <label class="radio-pill"><input type="radio" name="f-tipo" value="Problema" checked> Problema</label>
+            <label class="radio-pill"><input type="radio" name="f-tipo" value="Buena práctica"> Buena práctica</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-impacto">Nivel de impacto *</label>
+          <select id="f-impacto" required>
+            <option value="">Selecciona el impacto</option>
+            <option>Bajo</option>
+            <option>Medio</option>
+            <option>Alto</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f-responsable">Responsable *</label>
+          <input type="text" id="f-responsable" placeholder="Nombre del responsable" required>
+        </div>
+
+        <div class="field">
+          <label for="f-fecha">Fecha *</label>
+          <input type="date" id="f-fecha" required>
+        </div>
+
+        <div class="field field-wide">
+          <label for="f-descripcion">Descripción del problema o experiencia *</label>
+          <textarea id="f-descripcion" rows="3" placeholder="¿Qué ocurrió?" required></textarea>
+        </div>
+
+        <div class="field field-wide" id="wrap-causa">
+          <label for="f-causa">Causa identificada</label>
+          <textarea id="f-causa" rows="2" placeholder="¿Por qué ocurrió?"></textarea>
+        </div>
+
+        <div class="field field-wide" id="wrap-solucion">
+          <label for="f-solucion">Solución aplicada</label>
+          <textarea id="f-solucion" rows="2" placeholder="¿Cómo se resolvió?"></textarea>
+        </div>
+
+        <div class="field field-wide">
+          <label for="f-buenaspracticas">Buenas prácticas</label>
+          <textarea id="f-buenaspracticas" rows="2" placeholder="¿Qué se hizo bien y vale la pena repetir?"></textarea>
+        </div>
+
+        <div class="field field-wide">
+          <label for="f-recomendacion">Recomendación para futuros proyectos</label>
+          <textarea id="f-recomendacion" rows="2" placeholder="¿Qué debería hacerse diferente?"></textarea>
+        </div>
+
+      </div>
+
+      <!-- Sugerencias de experiencias similares -->
+      <div class="suggestions" id="suggestionsBox" hidden>
+        <h3 id="suggestionsTitle">Experiencias similares encontradas</h3>
+        <div id="suggestionsList"></div>
+      </div>
+
+      <div class="form-actions">
+        <span class="form-msg" id="formMsg"></span>
+        <button type="button" class="btn btn-ghost" id="btnLimpiar">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Registrar lección</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ---------- CONSULTAR LECCIONES ---------- -->
+  <section class="view" id="view-consultar">
+    <header class="view-header">
+      <div>
+        <h1>Consultar lecciones</h1>
+        <p>Busca y filtra el conocimiento acumulado por el equipo.</p>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <input type="text" id="buscador" placeholder="Buscar por palabra clave, proyecto, problema...">
+      <select id="filtroCategoria">
+        <option value="">Todas las categorías</option>
+        <option>Programación</option>
+        <option>Comunicación</option>
+        <option>Tiempos de entrega</option>
+        <option>Requerimientos</option>
+        <option>Coordinación</option>
+        <option>Otra</option>
+      </select>
+      <select id="filtroProyecto">
+        <option value="">Todos los proyectos</option>
+      </select>
+      <select id="filtroTipo">
+        <option value="">Todos los tipos</option>
+        <option>Problema</option>
+        <option>Buena práctica</option>
+      </select>
+      <select id="filtroImpacto">
+        <option value="">Todo impacto</option>
+        <option>Bajo</option>
+        <option>Medio</option>
+        <option>Alto</option>
+      </select>
+    </div>
+
+    <div class="lessons-grid" id="leccionesGrid"></div>
+    <p class="empty-state" id="leccionesEmpty" hidden>No se encontraron lecciones con esos criterios.</p>
+  </section>
+
+  <!-- ---------- PROYECTOS ---------- -->
+  <section class="view" id="view-proyectos">
+    <header class="view-header">
+      <div>
+        <h1>Proyectos</h1>
+        <p>Registra los proyectos de la empresa y consulta sus lecciones asociadas.</p>
+      </div>
+      <button class="btn btn-primary" id="btnNuevoProyecto">+ Nuevo proyecto</button>
+    </header>
+
+    <form class="form-card" id="formProyecto" hidden>
+      <div class="form-grid">
+        <div class="field field-wide">
+          <label for="p-nombre">Nombre del proyecto *</label>
+          <input type="text" id="p-nombre" required>
+        </div>
+        <div class="field field-wide">
+          <label for="p-descripcion">Descripción</label>
+          <textarea id="p-descripcion" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="p-responsable">Responsable *</label>
+          <input type="text" id="p-responsable" required>
+        </div>
+        <div class="field">
+          <label for="p-estado">Estado *</label>
+          <select id="p-estado" required>
+            <option>En planificación</option>
+            <option>En ejecución</option>
+            <option>Finalizado</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="p-inicio">Fecha de inicio *</label>
+          <input type="date" id="p-inicio" required>
+        </div>
+        <div class="field">
+          <label for="p-fin">Fecha de finalización</label>
+          <input type="date" id="p-fin">
+        </div>
+      </div>
+      <div class="form-actions">
+        <span class="form-msg" id="proyectoMsg"></span>
+        <button type="button" class="btn btn-ghost" id="btnCancelarProyecto">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar proyecto</button>
+      </div>
+    </form>
+
+    <div class="projects-grid" id="proyectosGrid"></div>
+  </section>
+
+  <!-- ---------- REPORTES ---------- -->
+  <section class="view" id="view-reportes">
+    <header class="view-header">
+      <div>
+        <h1>Reportes</h1>
+        <p>Análisis consolidado de todas las lecciones registradas.</p>
+      </div>
+    </header>
+
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Categorías con más problemas</h2>
+        <div class="bar-chart" id="repCategorias"></div>
+      </div>
+      <div class="panel">
+        <h2>Proyectos con más lecciones</h2>
+        <div class="bar-chart" id="repProyectos"></div>
+      </div>
+    </div>
+
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Nivel de impacto</h2>
+        <div class="bar-chart" id="repImpacto"></div>
+      </div>
+      <div class="panel">
+        <h2>Resumen general</h2>
+        <ul class="summary-list" id="repResumen"></ul>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Problemas recurrentes detectados</h2>
+      <div id="repRecurrentes" class="recurrentes-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== MODAL DETALLE ===================== -->
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===================== MODAL DETALLE PROYECTO ===================== -->
+<div class="modal-overlay" id="modalProyectoOverlay" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modalProyectoClose">&times;</button>
+    <div id="modalProyectoBody"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
